@@ -62,7 +62,7 @@ const addItems = async (item)=>{
    const postOption = {
     method:"POST",
     headers:{
-      "content-type":"application/json"
+      "Content-Type":"application/json"
     },
     body:JSON.stringify(mynewitem)
    }
@@ -72,29 +72,34 @@ const addItems = async (item)=>{
    if (result) setFetchError(result)
 }
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
 const handlecheck = async (id)=>{
     const listItems = items.map(item => item.id==id?{...item,checked:!item.checked}:item) 
     setItems(listItems)
 
-    const myitem = listItems.filter((item)=>item.id==id)
+    const myitem = listItems.filter((item)=>item.id===id)
+    
     const updateOption = {
       method:"PATCH",
       headers:{
-        'context-type':"application/json"
+        'Context-Type':"application/json"
       },
       body:JSON.stringify({checked:myitem[0].checked})
-
     }
 
     const reqUrl =` ${APP_URL}/${id}`
     const result = await Apirequest(reqUrl,updateOption)
     if (result) setFetchError(result)
 }
-
-const handledelete = (id)=>{
+///////////////////////////////////////////////////////////////////////////
+const handledelete = async (id)=>{
     const listItems = items.filter(item=>item.id!==id)
     setItems(listItems)
+    const deleteoption = {method:"DELETE"}
+    const reqUrl =` ${APP_URL}/${id}`
+    const result = await Apirequest(reqUrl,deleteoption)
+    if (result) setFetchError(result)
+
 }
 
   return (
