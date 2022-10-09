@@ -70,20 +70,26 @@ const addItems = async (item)=>{
 
    const result = await Apirequest(APP_URL,postOption)
    if (result) setFetchError(result)
-
-
-
-
-
-
-
-
 }
 
 
-const handlecheck = (id)=>{
+const handlecheck = async (id)=>{
     const listItems = items.map(item => item.id==id?{...item,checked:!item.checked}:item) 
     setItems(listItems)
+
+    const myitem = listItems.filter((item)=>item.id==id)
+    const updateOption = {
+      method:"PATCH",
+      headers:{
+        'context-type':"application/json"
+      },
+      body:JSON.stringify({checked:myitem[0].checked})
+
+    }
+
+    const reqUrl =` ${APP_URL}/${id}`
+    const result = await Apirequest(reqUrl,updateOption)
+    if (result) setFetchError(result)
 }
 
 const handledelete = (id)=>{
