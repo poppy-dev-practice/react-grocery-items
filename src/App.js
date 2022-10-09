@@ -78,7 +78,7 @@ const handledelete = (id)=>{
       <main>
       {isloading&&<p style={{color:"violet"}}>loading please wait...</p>}
       {error&&<p style={{color:"red"}}>{`Error:${error}`}</p>}
-      {!error &&<Content items={items.filter(item=>((item.item).toLowerCase()).includes(search.toLowerCase()))}     //////fragments adukku in content 
+      {!error && !isloading && <Content items={items.filter(item=>((item.item).toLowerCase()).includes(search.toLowerCase()))}     //////fragments adukku in content 
       handlecheck={handlecheck}
       handledelete={handledelete} />}
       </main>
