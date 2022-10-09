@@ -6,16 +6,32 @@ import AddItems from './AddItems';
 import SearchItems from './SearchItems';
 
 function App() {
-  
+  const APP_URL="http://localhost:3500/items"
 
-const[items,setItems] = useState(JSON.parse(localStorage.getItem("ShoppingItem"))||[])
+const[items,setItems] = useState([])
 const[newitem,setNewitem] = useState("")  ////referring state
 const[search,SetSearch] = useState("")
+const[error,setFetchError] = useState(null)
 
 
 useEffect(()=>{
-  localStorage.setItem("ShoppingItem",JSON.stringify(items))
-},[items])
+
+  const fetchitems = async ()=>{
+    try{
+    const response = await fetch(APP_URL)
+    if (!response.ok) throw Error("did not get data")
+    const listItems = await response.json()
+    console.log(listItems);
+    setItems(listItems)
+    setFetchError(null)
+    }catch(err){
+      setFetchError(err.message)
+    }
+  }
+
+  (async()=>await fetchitems())()
+  
+},[])
 
 const handleSubit = (e)=>{
   e.preventDefault()
@@ -51,9 +67,12 @@ const handledelete = (id)=>{
       <Header title={"Groceries List"} />
       <AddItems newitem={newitem} setNewitem={setNewitem} handleSubit={handleSubit}></AddItems>
       <SearchItems search={search} SetSearch={SetSearch} ></SearchItems>
-      <Content items={items.filter(item=>((item.item).toLowerCase()).includes(search.toLowerCase()))}
+      <main>
+      {error&&<p style={{color:"red"}}>{`Error:${error}`}</p>}
+      {!error&&<Content items={items.filter(item=>((item.item).toLowerCase()).includes(search.toLowerCase()))}     //////fragments adukku in content 
       handlecheck={handlecheck}
-      handledelete={handledelete} />
+      handledelete={handledelete} />}
+      </main>
       <Footer length={items.length}/>
     </div>
   );

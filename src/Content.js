@@ -11,9 +11,9 @@ const Content = ({items,handlecheck,handledelete}) => {
 
 
     return (
-        <main>
-            {items.length?<ItemList items={items} handlecheck={handlecheck} handledelete={handledelete} />:<p style={{marginTop:"2rem",color:"red"}}>Oops your basket is empty</p>}
-        </main>
+        <>
+            {items.length?<ItemList items={items} handlecheck={handlecheck} handledelete={handledelete} />:<p style={{marginTop:"2rem",color:"blue"}}>Oops your basket is empty</p>}
+        </>
     )
 }
 
