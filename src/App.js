@@ -12,6 +12,7 @@ const[items,setItems] = useState([])
 const[newitem,setNewitem] = useState("")  ////referring state
 const[search,SetSearch] = useState("")
 const[error,setFetchError] = useState(null)
+const[isloading,setIsLoading] = useState(true)
 
 
 useEffect(()=>{
@@ -26,6 +27,8 @@ useEffect(()=>{
     setFetchError(null)
     }catch(err){
       setFetchError(err.message)
+    }finally{
+      setIsLoading(false)
     }
   }
   
@@ -73,8 +76,9 @@ const handledelete = (id)=>{
       <AddItems newitem={newitem} setNewitem={setNewitem} handleSubit={handleSubit}></AddItems>
       <SearchItems search={search} SetSearch={SetSearch} ></SearchItems>
       <main>
+      {isloading&&<p style={{color:"violet"}}>loading please wait...</p>}
       {error&&<p style={{color:"red"}}>{`Error:${error}`}</p>}
-      {!error&&<Content items={items.filter(item=>((item.item).toLowerCase()).includes(search.toLowerCase()))}     //////fragments adukku in content 
+      {!error &&<Content items={items.filter(item=>((item.item).toLowerCase()).includes(search.toLowerCase()))}     //////fragments adukku in content 
       handlecheck={handlecheck}
       handledelete={handledelete} />}
       </main>
