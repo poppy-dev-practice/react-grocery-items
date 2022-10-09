@@ -4,6 +4,7 @@ import Footer from './Footer';
 import { useEffect, useState } from 'react';
 import AddItems from './AddItems';
 import SearchItems from './SearchItems';
+import Apirequest from './apiRequest';
 
 function App() {
   const APP_URL="http://localhost:3500/items"
@@ -51,12 +52,32 @@ const handleSubit = (e)=>{
 }
 
 
-const addItems = (item)=>{
+const addItems = async (item)=>{
    const id = items.length?items[items.length-1].id+1:1
    console.log(`thambi id is ${id}`);
    const mynewitem={id,checked:false,item}
    const listItems=[...items,mynewitem]
    setItems(listItems)
+
+   const postOption = {
+    method:"POST",
+    headers:{
+      "content-type":"application/json"
+    },
+    body:JSON.stringify(mynewitem)
+   }
+
+
+   const result = await Apirequest(APP_URL,postOption)
+   if (result) setFetchError(result)
+
+
+
+
+
+
+
+
 }
 
 
@@ -76,7 +97,7 @@ const handledelete = (id)=>{
       <AddItems newitem={newitem} setNewitem={setNewitem} handleSubit={handleSubit}></AddItems>
       <SearchItems search={search} SetSearch={SetSearch} ></SearchItems>
       <main>
-      {isloading&&<p style={{color:"violet"}}>loading please wait...</p>}
+      {isloading&&<p style={{color:"violet"}}>loading items please wait...</p>}
       {error&&<p style={{color:"red"}}>{`Error:${error}`}</p>}
       {!error && !isloading && <Content items={items.filter(item=>((item.item).toLowerCase()).includes(search.toLowerCase()))}     //////fragments adukku in content 
       handlecheck={handlecheck}
