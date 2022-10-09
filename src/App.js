@@ -28,8 +28,13 @@ useEffect(()=>{
       setFetchError(err.message)
     }
   }
+  
+  setTimeout(()=>{
+    (async()=>await fetchitems())()
+  },2000)
 
-  (async()=>await fetchitems())()
+
+  
   
 },[])
 
